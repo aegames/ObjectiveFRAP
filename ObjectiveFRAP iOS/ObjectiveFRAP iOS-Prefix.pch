@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'ObjectiveFRAP iOS' target in the 'ObjectiveFRAP iOS' project
+//
+
+#ifdef __OBJC__
+    #import <Foundation/Foundation.h>
+#endif
