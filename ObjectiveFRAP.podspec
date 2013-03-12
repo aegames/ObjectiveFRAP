@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
                    which is compatible with iOS and Mac OS X.
                    DESC
   s.homepage     = "https://github.com/aegames/ObjectiveFRAP"
-  s.author       = { "Nat Budin" => "natbudin@gmail.com" }
+  s.author       = { "Nat Budin" => "natbudin@gmail.com", :tag => "v0.0.1" }
 
   s.source       = { :git => "https://github.com/aegames/ObjectiveFRAP.git" }
 
