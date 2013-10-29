@@ -24,6 +24,7 @@ Pod::Spec.new do |s|
   s.osx.deployment_target = '10.6'
 
   s.source_files = 'ObjectiveFRAP', 'ObjectiveFRAP/**/*.{h,m}'
+  s.public_header_files = 'ObjectiveFRAP/*.h'
   s.requires_arc = true
 
   s.dependency 'CocoaAsyncSocket'
