@@ -62,7 +62,7 @@ FrapEndpoint *sharedInstance;
 +(FrapEndpoint *)sharedEndpoint {
     @synchronized([FrapEndpoint class]) {
         if (sharedInstance == nil) {
-            sharedInstance = [[FrapEndpoint alloc] init];
+            sharedInstance = [[self alloc] init];
         }
     }
     
