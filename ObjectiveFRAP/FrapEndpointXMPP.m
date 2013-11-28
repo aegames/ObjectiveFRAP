@@ -152,8 +152,8 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     DDLogWarn(@"Detected accidental disconnect");
 }
 
--(void)sendFrapMessage:(FrapMessage *)msg {
-    [room sendMessageWithBody:[[NSString alloc] initWithData:[msg encode] encoding:NSUTF8StringEncoding]];
+-(void)sendData:(NSData *)data {
+    [room sendMessageWithBody:[[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]];
 }
 
 -(void)xmppRoom:(XMPPRoom *)sender didReceiveMessage:(XMPPMessage *)message fromOccupant:(XMPPJID *)occupantJID {
