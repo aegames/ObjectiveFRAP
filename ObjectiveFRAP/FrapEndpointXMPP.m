@@ -60,14 +60,6 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     DDLogInfo(@"Started negotiation");
 }
 
--(void)xmppStream:(XMPPStream *)sender didReceiveMessage:(XMPPMessage *)message {
-    DDLogInfo(@"Received message: %@", message);
-}
-
--(void)xmppStream:(XMPPStream *)sender didReceiveP2PFeatures:(DDXMLElement *)streamFeatures {
-    DDLogInfo(@"Received P2P Features: %@", streamFeatures);
-}
-
 -(void)xmppStreamDidConnect:(XMPPStream *)sender {
     DDLogInfo(@"Connected to XMPP server, authenticating");
     [xmppStream authenticateWithPassword:@"ObjectiveFRAP" error:nil];

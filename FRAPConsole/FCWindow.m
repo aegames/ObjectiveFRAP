@@ -26,7 +26,7 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 }
 
 -(void)didReceiveFrapMessage:(FrapMessage *)msg {
-    DDLogInfo(@"%@", [msg encode]);
+    [_logger addTextToLog:[[NSString alloc] initWithData:[msg encode] encoding:NSUTF8StringEncoding] withColor:[NSColor purpleColor]];
 }
 
 -(void)didSendFrapMessage:(FrapMessage *)msg {
