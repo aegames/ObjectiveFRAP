@@ -51,6 +51,8 @@
                                                              NSFontAttributeName : font,
                                                              NSForegroundColorAttributeName : color}];
     
+    BOOL scroll = (NSMaxY(self.textView.visibleRect) == NSMaxY(self.textView.bounds));
+    
     [textView.textStorage beginEditing];
     [textView.textStorage appendAttributedString:attributedString];
     [textView.textStorage endEditing];
@@ -58,7 +60,8 @@
     NSRange range;
     range = NSMakeRange ([textView.string length], 0);
     
-    [textView scrollRangeToVisible: range];
+    if (scroll)
+        [textView scrollRangeToVisible: range];
 }
 
 @end
