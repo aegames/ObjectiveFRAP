@@ -29,4 +29,5 @@ Pod::Spec.new do |s|
 
   s.dependency 'CocoaAsyncSocket'
   s.dependency 'Reachability'
+  s.dependency 'XMPPFramework'
 end

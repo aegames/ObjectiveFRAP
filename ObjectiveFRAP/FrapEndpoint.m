@@ -15,9 +15,7 @@
 #import "GCDAsyncUdpSocket.h"
 #import "FrdlParser.h"
 
-FrapEndpoint *sharedInstance;
-
-@interface FrapEndpoint () {   
+@interface FrapEndpoint () {
     NSDictionary *sharedObjectLocks;
     NSLock *sharedObjectDictionaryLock;
     NSString *subscriptionRequestSid;
@@ -60,12 +58,14 @@ FrapEndpoint *sharedInstance;
 }
 
 +(FrapEndpoint *)sharedEndpoint {
-    @synchronized([FrapEndpoint class]) {
+    __strong static FrapEndpoint *sharedInstance = nil;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
         if (sharedInstance == nil) {
             sharedInstance = [[self alloc] init];
         }
-    }
-    
+    });
+        
     return sharedInstance;
 }
 

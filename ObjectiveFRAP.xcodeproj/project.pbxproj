@@ -7,10 +7,25 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		4715D72E3DE04A9BA151DEA0 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 043B50852D714F77AFD447B6 /* libPods.a */; };
+		00C52E56899A4718ADD2D978 /* libPods-ObjectiveFRAP Mac OS X.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6AF495B58AF341758DA2205E /* libPods-ObjectiveFRAP Mac OS X.a */; };
+		660D5A01183406C9004A92ED /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 660D5A00183406C9004A92ED /* SystemConfiguration.framework */; };
+		660D5A041834078D004A92ED /* FrapEndpointXMPP.h in Headers */ = {isa = PBXBuildFile; fileRef = 660D5A021834078D004A92ED /* FrapEndpointXMPP.h */; };
+		660D5A051834078D004A92ED /* FrapEndpointXMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 660D5A031834078D004A92ED /* FrapEndpointXMPP.m */; };
+		660D5A061834078D004A92ED /* FrapEndpointXMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 660D5A031834078D004A92ED /* FrapEndpointXMPP.m */; };
 		6642073216EF7F0E0088597B /* FrapEndpointUDP.h in Headers */ = {isa = PBXBuildFile; fileRef = 6642073016EF7F0E0088597B /* FrapEndpointUDP.h */; };
 		6642073316EF7F0E0088597B /* FrapEndpointUDP.m in Sources */ = {isa = PBXBuildFile; fileRef = 6642073116EF7F0E0088597B /* FrapEndpointUDP.m */; };
 		6642073416EF7F0E0088597B /* FrapEndpointUDP.m in Sources */ = {isa = PBXBuildFile; fileRef = 6642073116EF7F0E0088597B /* FrapEndpointUDP.m */; };
+		669022361845369700A5DCBA /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66E16D0F16EF674400CA7F33 /* Cocoa.framework */; };
+		6690223C1845369700A5DCBA /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6690223A1845369700A5DCBA /* InfoPlist.strings */; };
+		6690223E1845369700A5DCBA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6690223D1845369700A5DCBA /* main.m */; };
+		669022421845369700A5DCBA /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 669022401845369700A5DCBA /* Credits.rtf */; };
+		669022451845369700A5DCBA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 669022441845369700A5DCBA /* AppDelegate.m */; };
+		669022481845369700A5DCBA /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 669022461845369700A5DCBA /* MainMenu.xib */; };
+		6690224A1845369700A5DCBA /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 669022491845369700A5DCBA /* Images.xcassets */; };
+		66902263184536A800A5DCBA /* ObjectiveFRAP Mac OS X.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66E16D0C16EF674400CA7F33 /* ObjectiveFRAP Mac OS X.framework */; };
+		669022691845396A00A5DCBA /* FCWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 660D59F01834018E004A92ED /* FCWindow.m */; };
+		6690226C1847CD6E00A5DCBA /* FCLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 6690226B1847CD6E00A5DCBA /* FCLogger.m */; };
+		66B6E8291834564D00F2194B /* XMPPFramework.h in Headers */ = {isa = PBXBuildFile; fileRef = 66B6E8281834564D00F2194B /* XMPPFramework.h */; };
 		66E16D1016EF674400CA7F33 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66E16D0F16EF674400CA7F33 /* Cocoa.framework */; };
 		66E16D1A16EF674400CA7F33 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 66E16D1816EF674400CA7F33 /* InfoPlist.strings */; };
 		66E16D2616EF674400CA7F33 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 66E16D2516EF674400CA7F33 /* SenTestingKit.framework */; };
@@ -39,6 +54,7 @@
 		66E16D7B16EF67CB00CA7F33 /* FrapMessages.m in Sources */ = {isa = PBXBuildFile; fileRef = 66E16D4116EF675500CA7F33 /* FrapMessages.m */; };
 		66E16D7C16EF67CB00CA7F33 /* FrapSharedObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 66E16D4316EF675500CA7F33 /* FrapSharedObject.m */; };
 		66E16D7D16EF67CB00CA7F33 /* FrdlParser.m in Sources */ = {isa = PBXBuildFile; fileRef = 66E16D4516EF675500CA7F33 /* FrdlParser.m */; };
+		FC8A14C6C1A748789F12F88C /* libPods-ObjectiveFRAP iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8E9CAD49586D4144BCA18558 /* libPods-ObjectiveFRAP iOS.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -72,9 +88,33 @@
 
 /* Begin PBXFileReference section */
 		043B50852D714F77AFD447B6 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		40527EB9308347B5950F8F58 /* libPods-FRAPConsole.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-FRAPConsole.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		567267D5C5584C0491E4D3E0 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = SOURCE_ROOT; };
+		660D59E51834014F004A92ED /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		660D59EF1834018E004A92ED /* FCWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FCWindow.h; path = FRAPConsole/FCWindow.h; sourceTree = SOURCE_ROOT; };
+		660D59F01834018E004A92ED /* FCWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FCWindow.m; path = FRAPConsole/FCWindow.m; sourceTree = SOURCE_ROOT; };
+		660D5A00183406C9004A92ED /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		660D5A021834078D004A92ED /* FrapEndpointXMPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrapEndpointXMPP.h; sourceTree = "<group>"; };
+		660D5A031834078D004A92ED /* FrapEndpointXMPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrapEndpointXMPP.m; sourceTree = "<group>"; };
 		6642073016EF7F0E0088597B /* FrapEndpointUDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrapEndpointUDP.h; sourceTree = "<group>"; };
 		6642073116EF7F0E0088597B /* FrapEndpointUDP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrapEndpointUDP.m; sourceTree = "<group>"; };
+		669022351845369700A5DCBA /* FRAPConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRAPConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		669022391845369700A5DCBA /* FRAPConsole-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FRAPConsole-Info.plist"; sourceTree = "<group>"; };
+		6690223B1845369700A5DCBA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6690223D1845369700A5DCBA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6690223F1845369700A5DCBA /* FRAPConsole-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FRAPConsole-Prefix.pch"; sourceTree = "<group>"; };
+		669022411845369700A5DCBA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
+		669022431845369700A5DCBA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		669022441845369700A5DCBA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		669022471845369700A5DCBA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/MainMenu.xib; sourceTree = "<group>"; };
+		669022491845369700A5DCBA /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		669022501845369700A5DCBA /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
+		669022571845369700A5DCBA /* FRAPConsoleTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FRAPConsoleTests-Info.plist"; sourceTree = "<group>"; };
+		669022591845369700A5DCBA /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6690225B1845369700A5DCBA /* FRAPConsoleTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FRAPConsoleTests.m; sourceTree = "<group>"; };
+		6690226A1847CD6E00A5DCBA /* FCLogger.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FCLogger.h; sourceTree = "<group>"; };
+		6690226B1847CD6E00A5DCBA /* FCLogger.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FCLogger.m; sourceTree = "<group>"; };
+		66B6E8281834564D00F2194B /* XMPPFramework.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XMPPFramework.h; sourceTree = "<group>"; };
 		66E16D0C16EF674400CA7F33 /* ObjectiveFRAP Mac OS X.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "ObjectiveFRAP Mac OS X.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
 		66E16D0F16EF674400CA7F33 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		66E16D1216EF674400CA7F33 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -108,15 +148,30 @@
 		66E16D6F16EF679400CA7F33 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		66E16D7116EF679400CA7F33 /* ObjectiveFRAP_iOSTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ObjectiveFRAP_iOSTests.h; sourceTree = "<group>"; };
 		66E16D7216EF679400CA7F33 /* ObjectiveFRAP_iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ObjectiveFRAP_iOSTests.m; sourceTree = "<group>"; };
+		6AF495B58AF341758DA2205E /* libPods-ObjectiveFRAP Mac OS X.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ObjectiveFRAP Mac OS X.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6B17C548A2374D00881A0347 /* Pods-FRAPConsole.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FRAPConsole.xcconfig"; path = "Pods/Pods-FRAPConsole.xcconfig"; sourceTree = "<group>"; };
+		8E9CAD49586D4144BCA18558 /* libPods-ObjectiveFRAP iOS.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ObjectiveFRAP iOS.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7C4CA6B3AF24AF088DB3CCF /* Pods-ObjectiveFRAP iOS.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectiveFRAP iOS.xcconfig"; path = "Pods/Pods-ObjectiveFRAP iOS.xcconfig"; sourceTree = "<group>"; };
+		F055F7B72AD246CB9801AB2C /* Pods-ObjectiveFRAP Mac OS X.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ObjectiveFRAP Mac OS X.xcconfig"; path = "Pods/Pods-ObjectiveFRAP Mac OS X.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		669022321845369700A5DCBA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				66902263184536A800A5DCBA /* ObjectiveFRAP Mac OS X.framework in Frameworks */,
+				669022361845369700A5DCBA /* Cocoa.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		66E16D0816EF674400CA7F33 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				660D5A01183406C9004A92ED /* SystemConfiguration.framework in Frameworks */,
 				66E16D1016EF674400CA7F33 /* Cocoa.framework in Frameworks */,
-				4715D72E3DE04A9BA151DEA0 /* libPods.a in Frameworks */,
+				00C52E56899A4718ADD2D978 /* libPods-ObjectiveFRAP Mac OS X.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +190,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				66E16D5616EF679400CA7F33 /* Foundation.framework in Frameworks */,
+				FC8A14C6C1A748789F12F88C /* libPods-ObjectiveFRAP iOS.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,6 +208,52 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		669022371845369700A5DCBA /* FRAPConsole */ = {
+			isa = PBXGroup;
+			children = (
+				660D59EF1834018E004A92ED /* FCWindow.h */,
+				660D59F01834018E004A92ED /* FCWindow.m */,
+				669022431845369700A5DCBA /* AppDelegate.h */,
+				669022441845369700A5DCBA /* AppDelegate.m */,
+				669022461845369700A5DCBA /* MainMenu.xib */,
+				669022491845369700A5DCBA /* Images.xcassets */,
+				669022381845369700A5DCBA /* Supporting Files */,
+				6690226A1847CD6E00A5DCBA /* FCLogger.h */,
+				6690226B1847CD6E00A5DCBA /* FCLogger.m */,
+			);
+			path = FRAPConsole;
+			sourceTree = "<group>";
+		};
+		669022381845369700A5DCBA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				669022391845369700A5DCBA /* FRAPConsole-Info.plist */,
+				6690223A1845369700A5DCBA /* InfoPlist.strings */,
+				6690223D1845369700A5DCBA /* main.m */,
+				6690223F1845369700A5DCBA /* FRAPConsole-Prefix.pch */,
+				669022401845369700A5DCBA /* Credits.rtf */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		669022551845369700A5DCBA /* FRAPConsoleTests */ = {
+			isa = PBXGroup;
+			children = (
+				6690225B1845369700A5DCBA /* FRAPConsoleTests.m */,
+				669022561845369700A5DCBA /* Supporting Files */,
+			);
+			path = FRAPConsoleTests;
+			sourceTree = "<group>";
+		};
+		669022561845369700A5DCBA /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				669022571845369700A5DCBA /* FRAPConsoleTests-Info.plist */,
+				669022581845369700A5DCBA /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
 		66E16D0216EF674400CA7F33 = {
 			isa = PBXGroup;
 			children = (
@@ -159,9 +261,14 @@
 				66E16D2B16EF674400CA7F33 /* ObjectiveFRAPTests */,
 				66E16D5716EF679400CA7F33 /* ObjectiveFRAP iOS */,
 				66E16D6B16EF679400CA7F33 /* ObjectiveFRAP iOSTests */,
+				669022371845369700A5DCBA /* FRAPConsole */,
+				669022551845369700A5DCBA /* FRAPConsoleTests */,
 				66E16D0E16EF674400CA7F33 /* Frameworks */,
 				66E16D0D16EF674400CA7F33 /* Products */,
 				567267D5C5584C0491E4D3E0 /* Pods.xcconfig */,
+				F055F7B72AD246CB9801AB2C /* Pods-ObjectiveFRAP Mac OS X.xcconfig */,
+				A7C4CA6B3AF24AF088DB3CCF /* Pods-ObjectiveFRAP iOS.xcconfig */,
+				6B17C548A2374D00881A0347 /* Pods-FRAPConsole.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -172,6 +279,7 @@
 				66E16D2416EF674400CA7F33 /* ObjectiveFRAP Mac OS X Tests.octest */,
 				66E16D5416EF679400CA7F33 /* libObjectiveFRAP iOS.a */,
 				66E16D6316EF679400CA7F33 /* ObjectiveFRAP iOS Tests.octest */,
+				669022351845369700A5DCBA /* FRAPConsole.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -179,12 +287,18 @@
 		66E16D0E16EF674400CA7F33 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				660D5A00183406C9004A92ED /* SystemConfiguration.framework */,
 				66E16D0F16EF674400CA7F33 /* Cocoa.framework */,
 				66E16D2516EF674400CA7F33 /* SenTestingKit.framework */,
 				66E16D5516EF679400CA7F33 /* Foundation.framework */,
 				66E16D6516EF679400CA7F33 /* UIKit.framework */,
+				660D59E51834014F004A92ED /* CoreFoundation.framework */,
+				669022501845369700A5DCBA /* XCTest.framework */,
 				66E16D1116EF674400CA7F33 /* Other Frameworks */,
 				043B50852D714F77AFD447B6 /* libPods.a */,
+				6AF495B58AF341758DA2205E /* libPods-ObjectiveFRAP Mac OS X.a */,
+				8E9CAD49586D4144BCA18558 /* libPods-ObjectiveFRAP iOS.a */,
+				40527EB9308347B5950F8F58 /* libPods-FRAPConsole.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -215,6 +329,9 @@
 				66E16D4416EF675500CA7F33 /* FrdlParser.h */,
 				66E16D4516EF675500CA7F33 /* FrdlParser.m */,
 				66E16D1616EF674400CA7F33 /* Supporting Files */,
+				660D5A021834078D004A92ED /* FrapEndpointXMPP.h */,
+				660D5A031834078D004A92ED /* FrapEndpointXMPP.m */,
+				66B6E8281834564D00F2194B /* XMPPFramework.h */,
 			);
 			path = ObjectiveFRAP;
 			sourceTree = "<group>";
@@ -284,21 +401,41 @@
 			files = (
 				66E16D4616EF675500CA7F33 /* FrapEndpoint.h in Headers */,
 				66E16D4816EF675500CA7F33 /* FrapEndpointConnectionDelegate.h in Headers */,
+				66B6E8291834564D00F2194B /* XMPPFramework.h in Headers */,
 				66E16D4916EF675500CA7F33 /* FrapEndpointDelegate.h in Headers */,
 				66E16D4A16EF675500CA7F33 /* FrapMessages.h in Headers */,
 				66E16D4C16EF675500CA7F33 /* FrapSharedObject.h in Headers */,
 				66E16D4E16EF675500CA7F33 /* FrdlParser.h in Headers */,
 				6642073216EF7F0E0088597B /* FrapEndpointUDP.h in Headers */,
+				660D5A041834078D004A92ED /* FrapEndpointXMPP.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		669022341845369700A5DCBA /* FRAPConsole */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6690225D1845369700A5DCBA /* Build configuration list for PBXNativeTarget "FRAPConsole" */;
+			buildPhases = (
+				669022311845369700A5DCBA /* Sources */,
+				669022321845369700A5DCBA /* Frameworks */,
+				669022331845369700A5DCBA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FRAPConsole;
+			productName = FRAPConsole;
+			productReference = 669022351845369700A5DCBA /* FRAPConsole.app */;
+			productType = "com.apple.product-type.application";
+		};
 		66E16D0B16EF674400CA7F33 /* ObjectiveFRAP Mac OS X */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66E16D3616EF674400CA7F33 /* Build configuration list for PBXNativeTarget "ObjectiveFRAP Mac OS X" */;
 			buildPhases = (
+				9F88B1CBDF324E99A7043A77 /* Check Pods Manifest.lock */,
 				66E16D0716EF674400CA7F33 /* Sources */,
 				66E16D0816EF674400CA7F33 /* Frameworks */,
 				66E16D0916EF674400CA7F33 /* Headers */,
@@ -337,9 +474,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 66E16D7416EF679400CA7F33 /* Build configuration list for PBXNativeTarget "ObjectiveFRAP iOS" */;
 			buildPhases = (
+				E8653CC9F56E4F80A2E617B0 /* Check Pods Manifest.lock */,
 				66E16D5016EF679400CA7F33 /* Sources */,
 				66E16D5116EF679400CA7F33 /* Frameworks */,
 				66E16D5216EF679400CA7F33 /* CopyFiles */,
+				0F64D72DE0364BCE8BCA22C0 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -384,6 +523,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 66E16D0216EF674400CA7F33;
 			productRefGroup = 66E16D0D16EF674400CA7F33 /* Products */;
@@ -394,11 +534,23 @@
 				66E16D2316EF674400CA7F33 /* ObjectiveFRAP Mac OS X Tests */,
 				66E16D5316EF679400CA7F33 /* ObjectiveFRAP iOS */,
 				66E16D6216EF679400CA7F33 /* ObjectiveFRAP iOS Tests */,
+				669022341845369700A5DCBA /* FRAPConsole */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		669022331845369700A5DCBA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6690223C1845369700A5DCBA /* InfoPlist.strings in Resources */,
+				6690224A1845369700A5DCBA /* Images.xcassets in Resources */,
+				669022421845369700A5DCBA /* Credits.rtf in Resources */,
+				669022481845369700A5DCBA /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		66E16D0A16EF674400CA7F33 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -426,6 +578,21 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		0F64D72DE0364BCE8BCA22C0 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-ObjectiveFRAP iOS-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		66E16D2216EF674400CA7F33 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -452,6 +619,21 @@
 			shellPath = /bin/sh;
 			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
 		};
+		9F88B1CBDF324E99A7043A77 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
 		CA88EDAC763D41D886D61622 /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -464,11 +646,38 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Pods-ObjectiveFRAP Mac OS X-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E8653CC9F56E4F80A2E617B0 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		669022311845369700A5DCBA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				669022691845396A00A5DCBA /* FCWindow.m in Sources */,
+				669022451845369700A5DCBA /* AppDelegate.m in Sources */,
+				6690226C1847CD6E00A5DCBA /* FCLogger.m in Sources */,
+				6690223E1845369700A5DCBA /* main.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		66E16D0716EF674400CA7F33 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -477,6 +686,7 @@
 				66E16D4B16EF675500CA7F33 /* FrapMessages.m in Sources */,
 				66E16D4D16EF675500CA7F33 /* FrapSharedObject.m in Sources */,
 				66E16D4F16EF675500CA7F33 /* FrdlParser.m in Sources */,
+				660D5A051834078D004A92ED /* FrapEndpointXMPP.m in Sources */,
 				6642073316EF7F0E0088597B /* FrapEndpointUDP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -497,6 +707,7 @@
 				66E16D7B16EF67CB00CA7F33 /* FrapMessages.m in Sources */,
 				66E16D7C16EF67CB00CA7F33 /* FrapSharedObject.m in Sources */,
 				66E16D7D16EF67CB00CA7F33 /* FrdlParser.m in Sources */,
+				660D5A061834078D004A92ED /* FrapEndpointXMPP.m in Sources */,
 				6642073416EF7F0E0088597B /* FrapEndpointUDP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -525,6 +736,38 @@
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
+		6690223A1845369700A5DCBA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6690223B1845369700A5DCBA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		669022401845369700A5DCBA /* Credits.rtf */ = {
+			isa = PBXVariantGroup;
+			children = (
+				669022411845369700A5DCBA /* en */,
+			);
+			name = Credits.rtf;
+			sourceTree = "<group>";
+		};
+		669022461845369700A5DCBA /* MainMenu.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				669022471845369700A5DCBA /* Base */,
+			);
+			name = MainMenu.xib;
+			sourceTree = "<group>";
+		};
+		669022581845369700A5DCBA /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				669022591845369700A5DCBA /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 		66E16D1816EF674400CA7F33 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -552,6 +795,51 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6690225E1845369700A5DCBA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FRAPConsole/FRAPConsole-Prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "FRAPConsole/FRAPConsole-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6690225F1845369700A5DCBA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "FRAPConsole/FRAPConsole-Prefix.pch";
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				INFOPLIST_FILE = "FRAPConsole/FRAPConsole-Info.plist";
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
 		66E16D3416EF674400CA7F33 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 567267D5C5584C0491E4D3E0 /* Pods.xcconfig */;
@@ -581,6 +869,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "$(inherited)";
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -607,13 +896,14 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				OTHER_LDFLAGS = "$(inherited)";
 				SDKROOT = macosx;
 			};
 			name = Release;
 		};
 		66E16D3716EF674400CA7F33 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 567267D5C5584C0491E4D3E0 /* Pods.xcconfig */;
+			baseConfigurationReference = F055F7B72AD246CB9801AB2C /* Pods-ObjectiveFRAP Mac OS X.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -622,7 +912,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ObjectiveFRAP/ObjectiveFRAP-Prefix.pch";
 				INFOPLIST_FILE = "ObjectiveFRAP/ObjectiveFRAP-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -630,7 +921,7 @@
 		};
 		66E16D3816EF674400CA7F33 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 567267D5C5584C0491E4D3E0 /* Pods.xcconfig */;
+			baseConfigurationReference = F055F7B72AD246CB9801AB2C /* Pods-ObjectiveFRAP Mac OS X.xcconfig */;
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -639,7 +930,8 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ObjectiveFRAP/ObjectiveFRAP-Prefix.pch";
 				INFOPLIST_FILE = "ObjectiveFRAP/ObjectiveFRAP-Info.plist";
-				MACOSX_DEPLOYMENT_TARGET = 10.6;
+				MACOSX_DEPLOYMENT_TARGET = 10.7;
+				OTHER_LDFLAGS = "$(inherited)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				WRAPPER_EXTENSION = framework;
 			};
@@ -675,13 +967,13 @@
 		};
 		66E16D7516EF679400CA7F33 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 567267D5C5584C0491E4D3E0 /* Pods.xcconfig */;
+			baseConfigurationReference = A7C4CA6B3AF24AF088DB3CCF /* Pods-ObjectiveFRAP iOS.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/ObjectiveFRAP_iOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ObjectiveFRAP iOS/ObjectiveFRAP iOS-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -691,13 +983,13 @@
 		};
 		66E16D7616EF679400CA7F33 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 567267D5C5584C0491E4D3E0 /* Pods.xcconfig */;
+			baseConfigurationReference = A7C4CA6B3AF24AF088DB3CCF /* Pods-ObjectiveFRAP iOS.xcconfig */;
 			buildSettings = {
 				DSTROOT = /tmp/ObjectiveFRAP_iOS.dst;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ObjectiveFRAP iOS/ObjectiveFRAP iOS-Prefix.pch";
 				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
-				OTHER_LDFLAGS = "-ObjC";
+				OTHER_LDFLAGS = "";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -746,6 +1038,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6690225D1845369700A5DCBA /* Build configuration list for PBXNativeTarget "FRAPConsole" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6690225E1845369700A5DCBA /* Debug */,
+				6690225F1845369700A5DCBA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		66E16D0616EF674400CA7F33 /* Build configuration list for PBXProject "ObjectiveFRAP" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
