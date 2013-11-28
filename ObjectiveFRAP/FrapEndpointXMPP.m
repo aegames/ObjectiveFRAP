@@ -159,4 +159,8 @@ static int ddLogLevel = LOG_LEVEL_INFO;
     [self didReceiveFrapMessage:[FrapMessage decodeFrapMessage:message.body]];
 }
 
+-(BOOL)isConnected {
+    return (room && room.isJoined);
+}
+
 @end
