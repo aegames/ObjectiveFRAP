@@ -8,6 +8,7 @@
 
 #import "FrapEndpointXMPP.h"
 #import "DDXML.h"
+#import "DDLog.h"
 
 static int ddLogLevel = LOG_LEVEL_INFO;
 

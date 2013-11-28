@@ -22,14 +22,6 @@
 
 //  The following is standard:
 
-#import "DDLog.h"
-
-#ifdef DEBUG
-static const int xmppLogLevel = LOG_LEVEL_VERBOSE;
-#else
-static const int xmppLogLevel = LOG_LEVEL_WARN;
-#endif
-
 #import "XMPP.h"
 
 // List the modules you're using here:
