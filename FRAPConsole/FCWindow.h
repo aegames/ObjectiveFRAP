@@ -11,12 +11,16 @@
 #import "FrapEndpointConnectionDelegate.h"
 #import "FCLogger.h"
 
-@interface FCWindow: NSWindow<FrapEndpointDelegate>
+@interface FCWindow: NSWindow<FrapEndpointDelegate, NSTextViewDelegate, NSTextFieldDelegate> {
+    NSMutableArray *commandHistory;
+    int commandHistoryPosition;
+    NSString *savedCurrentCommand;
+}
 
 @property IBOutlet NSTextField *commandPrompt;
 @property IBOutlet NSTextView *logView;
 @property (readonly) FCLogger *logger;
 
--(void)repl;
+-(IBAction)sendCommand:(id)sender;
 
 @end

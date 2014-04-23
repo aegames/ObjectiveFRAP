@@ -21,22 +21,16 @@
 
 -(void)logMessage:(DDLogMessage *)logMessage {
     NSColor *color;
-    switch (logMessage->logLevel) {
-        case LOG_LEVEL_DEBUG:
-            color = [NSColor grayColor];
-            break;
-        case LOG_LEVEL_INFO:
-            color = [NSColor colorWithRed:0.2 green:0.2 blue:0.5 alpha:1.0];
-            break;
-        case LOG_LEVEL_WARN:
-            color = [NSColor orangeColor];
-            break;
-        case LOG_LEVEL_ERROR:
-            color = [NSColor redColor];
-            break;
-        default:
-            color = [NSColor darkGrayColor];
-            break;
+    if (logMessage->logFlag & LOG_FLAG_ERROR) {
+        color = [NSColor redColor];
+    } else if (logMessage->logFlag & LOG_FLAG_WARN) {
+        color = [NSColor orangeColor];
+    } else if  (logMessage->logFlag & LOG_FLAG_INFO) {
+        color = [NSColor colorWithRed:0.2 green:0.2 blue:0.5 alpha:1.0];
+    } else if (logMessage->logFlag & LOG_FLAG_DEBUG) {
+        color = [NSColor grayColor];
+    } else {
+        color = [NSColor darkGrayColor];
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{

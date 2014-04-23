@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "FrapEndpointXMPP.h"
+#import "FrapEndpointRedis.h"
 #import "DDLog.h"
 #import "DDTTYLogger.h"
 #import "FCWindow.h"
@@ -21,7 +21,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     FCWindow *mainWindow = (FCWindow *)self.window;
     [DDLog addLogger:mainWindow.logger withLogLevel:LOG_LEVEL_VERBOSE];
     
-    endpoint = [FrapEndpointXMPP sharedEndpoint];
+    endpoint = [FrapEndpointRedis sharedEndpoint];
     endpoint.endpointId = @"FRAPConsole";
     endpoint.connectionDelegate = self;
     

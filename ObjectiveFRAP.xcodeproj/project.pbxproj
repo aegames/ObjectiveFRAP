@@ -12,6 +12,12 @@
 		660D5A041834078D004A92ED /* FrapEndpointXMPP.h in Headers */ = {isa = PBXBuildFile; fileRef = 660D5A021834078D004A92ED /* FrapEndpointXMPP.h */; };
 		660D5A051834078D004A92ED /* FrapEndpointXMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 660D5A031834078D004A92ED /* FrapEndpointXMPP.m */; };
 		660D5A061834078D004A92ED /* FrapEndpointXMPP.m in Sources */ = {isa = PBXBuildFile; fileRef = 660D5A031834078D004A92ED /* FrapEndpointXMPP.m */; };
+		6611CE101906B64A0049874E /* FrapEndpointRedis.h in Headers */ = {isa = PBXBuildFile; fileRef = 6611CE0E1906B64A0049874E /* FrapEndpointRedis.h */; };
+		6611CE111906B64A0049874E /* FrapEndpointRedis.m in Sources */ = {isa = PBXBuildFile; fileRef = 6611CE0F1906B64A0049874E /* FrapEndpointRedis.m */; };
+		6611CE121906B64A0049874E /* FrapEndpointRedis.m in Sources */ = {isa = PBXBuildFile; fileRef = 6611CE0F1906B64A0049874E /* FrapEndpointRedis.m */; };
+		6611CE161906D7310049874E /* RedisLibDispatchEvents.h in Headers */ = {isa = PBXBuildFile; fileRef = 6611CE141906D7310049874E /* RedisLibDispatchEvents.h */; };
+		6611CE171906D7310049874E /* RedisLibDispatchEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 6611CE151906D7310049874E /* RedisLibDispatchEvents.m */; };
+		6611CE181906D7310049874E /* RedisLibDispatchEvents.m in Sources */ = {isa = PBXBuildFile; fileRef = 6611CE151906D7310049874E /* RedisLibDispatchEvents.m */; };
 		6642073216EF7F0E0088597B /* FrapEndpointUDP.h in Headers */ = {isa = PBXBuildFile; fileRef = 6642073016EF7F0E0088597B /* FrapEndpointUDP.h */; };
 		6642073316EF7F0E0088597B /* FrapEndpointUDP.m in Sources */ = {isa = PBXBuildFile; fileRef = 6642073116EF7F0E0088597B /* FrapEndpointUDP.m */; };
 		6642073416EF7F0E0088597B /* FrapEndpointUDP.m in Sources */ = {isa = PBXBuildFile; fileRef = 6642073116EF7F0E0088597B /* FrapEndpointUDP.m */; };
@@ -96,6 +102,11 @@
 		660D5A00183406C9004A92ED /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		660D5A021834078D004A92ED /* FrapEndpointXMPP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrapEndpointXMPP.h; sourceTree = "<group>"; };
 		660D5A031834078D004A92ED /* FrapEndpointXMPP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrapEndpointXMPP.m; sourceTree = "<group>"; };
+		6611CE0E1906B64A0049874E /* FrapEndpointRedis.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrapEndpointRedis.h; sourceTree = "<group>"; };
+		6611CE0F1906B64A0049874E /* FrapEndpointRedis.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrapEndpointRedis.m; sourceTree = "<group>"; };
+		6611CE131906D4250049874E /* hiredis-libdispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "hiredis-libdispatch.h"; sourceTree = "<group>"; };
+		6611CE141906D7310049874E /* RedisLibDispatchEvents.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RedisLibDispatchEvents.h; sourceTree = "<group>"; };
+		6611CE151906D7310049874E /* RedisLibDispatchEvents.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RedisLibDispatchEvents.m; sourceTree = "<group>"; };
 		6642073016EF7F0E0088597B /* FrapEndpointUDP.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrapEndpointUDP.h; sourceTree = "<group>"; };
 		6642073116EF7F0E0088597B /* FrapEndpointUDP.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FrapEndpointUDP.m; sourceTree = "<group>"; };
 		669022351845369700A5DCBA /* FRAPConsole.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FRAPConsole.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -332,6 +343,11 @@
 				660D5A021834078D004A92ED /* FrapEndpointXMPP.h */,
 				660D5A031834078D004A92ED /* FrapEndpointXMPP.m */,
 				66B6E8281834564D00F2194B /* XMPPFramework.h */,
+				6611CE0E1906B64A0049874E /* FrapEndpointRedis.h */,
+				6611CE0F1906B64A0049874E /* FrapEndpointRedis.m */,
+				6611CE131906D4250049874E /* hiredis-libdispatch.h */,
+				6611CE141906D7310049874E /* RedisLibDispatchEvents.h */,
+				6611CE151906D7310049874E /* RedisLibDispatchEvents.m */,
 			);
 			path = ObjectiveFRAP;
 			sourceTree = "<group>";
@@ -401,10 +417,12 @@
 			files = (
 				66E16D4616EF675500CA7F33 /* FrapEndpoint.h in Headers */,
 				66E16D4816EF675500CA7F33 /* FrapEndpointConnectionDelegate.h in Headers */,
+				6611CE101906B64A0049874E /* FrapEndpointRedis.h in Headers */,
 				66B6E8291834564D00F2194B /* XMPPFramework.h in Headers */,
 				66E16D4916EF675500CA7F33 /* FrapEndpointDelegate.h in Headers */,
 				66E16D4A16EF675500CA7F33 /* FrapMessages.h in Headers */,
 				66E16D4C16EF675500CA7F33 /* FrapSharedObject.h in Headers */,
+				6611CE161906D7310049874E /* RedisLibDispatchEvents.h in Headers */,
 				66E16D4E16EF675500CA7F33 /* FrdlParser.h in Headers */,
 				6642073216EF7F0E0088597B /* FrapEndpointUDP.h in Headers */,
 				660D5A041834078D004A92ED /* FrapEndpointXMPP.h in Headers */,
@@ -514,6 +532,7 @@
 		66E16D0316EF674400CA7F33 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastTestingUpgradeCheck = 0510;
 				LastUpgradeCheck = 0500;
 				ORGANIZATIONNAME = "Alleged Entertainment";
 			};
@@ -686,7 +705,9 @@
 				66E16D4B16EF675500CA7F33 /* FrapMessages.m in Sources */,
 				66E16D4D16EF675500CA7F33 /* FrapSharedObject.m in Sources */,
 				66E16D4F16EF675500CA7F33 /* FrdlParser.m in Sources */,
+				6611CE111906B64A0049874E /* FrapEndpointRedis.m in Sources */,
 				660D5A051834078D004A92ED /* FrapEndpointXMPP.m in Sources */,
+				6611CE171906D7310049874E /* RedisLibDispatchEvents.m in Sources */,
 				6642073316EF7F0E0088597B /* FrapEndpointUDP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -707,7 +728,9 @@
 				66E16D7B16EF67CB00CA7F33 /* FrapMessages.m in Sources */,
 				66E16D7C16EF67CB00CA7F33 /* FrapSharedObject.m in Sources */,
 				66E16D7D16EF67CB00CA7F33 /* FrdlParser.m in Sources */,
+				6611CE121906B64A0049874E /* FrapEndpointRedis.m in Sources */,
 				660D5A061834078D004A92ED /* FrapEndpointXMPP.m in Sources */,
+				6611CE181906D7310049874E /* RedisLibDispatchEvents.m in Sources */,
 				6642073416EF7F0E0088597B /* FrapEndpointUDP.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
