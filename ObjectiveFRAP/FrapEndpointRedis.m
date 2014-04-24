@@ -19,15 +19,19 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 +(FrapEndpointRedis *)endpointForContext:(const struct redisAsyncContext *)context;
 +(void)deregisterEndpointWithContext:(redisAsyncContext *)context;
 
+-(void)connectToRedis;
 -(void)redisContextDidConnect:(const struct redisAsyncContext *)c status:(int)status;
 -(void)redisContextDidDisconnect:(const struct redisAsyncContext *)c status:(int)status;
 -(void)sendRedisCommand:(NSArray *)args usingContext:(redisAsyncContext *)context andThen:(void (^)(redisReply *))block;
 -(void)sendRedisCommand:(NSArray *)args andThen:(void (^)(redisReply *))block;
+-(void)redisContextRepliedWithError:(const struct redisAsyncContext *)c;
+-(void)disconnectWithError:(NSError *)error;
 
 -(id)interpretRedisReply:(redisReply *)reply;
 @end
 
 @implementation FrapEndpointRedis
+@synthesize isConnected;
 
 void redisContextDidConnect(const struct redisAsyncContext *context, int status) {
     [[FrapEndpointRedis endpointForContext:context] redisContextDidConnect:context status:status];
@@ -38,8 +42,20 @@ void redisContextDidDisconnect(const struct redisAsyncContext *context, int stat
 }
 
 void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdata) {
-    void (^block)(redisReply *) = (__bridge void (^)(redisReply *))privdata;
-    block((redisReply *)reply);
+    if (reply) {
+        void (^block)(redisReply *) = (__bridge void (^)(redisReply *))privdata;
+        block((redisReply *)reply);
+    } else {
+        [[FrapEndpointRedis endpointForContext:context] redisContextRepliedWithError:context];
+    }
+}
+
+-(id)init {
+    serviceBrowser = [[NSNetServiceBrowser alloc] init];
+    servicesToResolve = [NSMutableSet set];
+    servicesResolved = [NSMutableSet set];
+    self.isConnected = NO;
+    return [super init];
 }
 
 +(NSMutableDictionary *)endpointDictionary {
@@ -80,34 +96,132 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 }
 
 -(BOOL)connect:(NSError *__autoreleasing *)error {
-    DDLogInfo(@"Connecting to Redis server...");
-    commandContext = redisAsyncConnect("127.0.0.1", 6379);
-    commandLibDispatchEvents = [[RedisLibDispatchEvents alloc] initWithContext:commandContext queue:dispatch_get_main_queue()];
+    serviceBrowser.delegate = self;
+    [serviceBrowser searchForServicesOfType:@"_redis._tcp" inDomain:@""];
+    [self.connectionDelegate frapEndpointWillConnect:self];
     
-    pubsubContext = redisAsyncConnect("127.0.0.1", 6379);
-    pubsubLibDispatchEvents = [[RedisLibDispatchEvents alloc] initWithContext:pubsubContext queue:dispatch_get_main_queue()];
+    browseTimer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, dispatch_get_main_queue());
     
-    BOOL (^registerEndpointIfConnected)(redisAsyncContext *) = ^BOOL(redisAsyncContext *context) {
-        if (context->err) {
-            *error = [NSError errorWithDomain:@"org.aegames" code:pubsubContext->err userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:pubsubContext->errstr encoding:NSASCIIStringEncoding], @"")}];
-            return NO;
-        } else {
-            [self.class registerEndpoint:self withContext:pubsubContext];
-            
-            return YES;
+    dispatch_source_set_event_handler(browseTimer, ^{ @autoreleasepool {
+        [serviceBrowser stop];
+        [self.connectionDelegate frapEndpoint:self didNotConnectWithError:[NSError errorWithDomain:@"org.aegames" code:-1 userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString(@"Failed to find any Redis servers", @"")}]];
+    }});
+    
+    dispatch_source_t theBrowseTimer = browseTimer;
+    dispatch_source_set_cancel_handler(browseTimer, ^{
+        dispatch_release(theBrowseTimer);
+    });
+    
+    dispatch_source_set_timer(browseTimer, dispatch_time(DISPATCH_TIME_NOW, (5.0 * NSEC_PER_SEC)), DISPATCH_TIME_FOREVER, 0);
+    
+    dispatch_resume(browseTimer);
+    
+    return YES;
+}
+
+-(void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
+    
+    dispatch_source_cancel(browseTimer);
+    
+    if ([aNetService.name isEqualToString:@"foh-redis"]) {
+        DDLogDebug(@"Found service %@ on %@", aNetService.name, aNetService);
+        
+        @synchronized(servicesToResolve) {
+            [servicesToResolve addObject:aNetService];
         }
-    };
+        aNetService.delegate = self;
+    }
     
-    if (registerEndpointIfConnected(commandContext)) {
-        if (registerEndpointIfConnected(pubsubContext)) {
-            return YES;
-        } else {
-            [self.class deregisterEndpointWithContext:commandContext];
-            redisAsyncDisconnect(commandContext);
+    if (!moreComing) {
+        @synchronized(servicesToResolve) {
+            for (NSNetService *service in servicesToResolve) {
+                [service resolveWithTimeout:5.0];
+            }
+        }
+    }
+}
+
+-(void)netServiceDidResolveAddress:(NSNetService *)aNetService {
+    DDLogDebug(@"Resolved service %@ on %@:%ld", aNetService.name, aNetService.hostName, aNetService.port);
+    
+    @synchronized(servicesToResolve) {
+        [servicesToResolve removeObject:aNetService];
+        [servicesResolved addObject:aNetService];
+    }
+    
+    if (servicesToResolve.count == 0) {
+        [self connectToRedis];
+    }
+}
+
+-(void)connectToRedis {
+    @synchronized(servicesResolved) {
+        if (self.isConnected) {
+            return;
+        }
+        
+        if (servicesResolved.count == 0) {
+            DDLogError(@"No Redis server found!");
+            [self.connectionDelegate frapEndpoint:self didNotConnectWithError:[NSError errorWithDomain:@"org.aegames" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"No Redis server found", @"")}]];
+            
+            return;
+        }
+        
+        NSNetService *bestService;
+        for (NSNetService *service in servicesResolved) {
+            if (bestService == nil) {
+                bestService = service;
+            } else if ([service.domain isEqualToString:@"local."]) {
+                bestService = service;
+            }
+        }
+        
+        const char *hostName = [bestService.hostName cStringUsingEncoding:NSASCIIStringEncoding];
+        int port = (int)bestService.port;
+        
+        [self.connectionDelegate frapEndpoint:self connectionStatusChangedTo:[NSString stringWithFormat:@"Connecting to Redis server on %s:%d", hostName, port]];
+        commandContext = redisAsyncConnect(hostName, port);
+        commandLibDispatchEvents = [[RedisLibDispatchEvents alloc] initWithContext:commandContext queue:dispatch_get_main_queue()];
+        
+        pubsubContext = redisAsyncConnect(hostName, port);
+        pubsubLibDispatchEvents = [[RedisLibDispatchEvents alloc] initWithContext:pubsubContext queue:dispatch_get_main_queue()];
+        
+        BOOL (^registerEndpointIfConnected)(redisAsyncContext *) = ^BOOL(redisAsyncContext *context) {
+            if (context->err) {
+                [self.connectionDelegate frapEndpoint:self didNotConnectWithError:[NSError errorWithDomain:@"org.aegames" code:pubsubContext->err userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:pubsubContext->errstr encoding:NSASCIIStringEncoding], @"")}]];
+                return NO;
+            } else {
+                [self.class registerEndpoint:self withContext:pubsubContext];
+                
+                return YES;
+            }
+        };
+        
+        if (registerEndpointIfConnected(commandContext)) {
+            if (registerEndpointIfConnected(pubsubContext)) {
+                return;
+            } else {
+                [self.class deregisterEndpointWithContext:commandContext];
+                redisAsyncDisconnect(commandContext);
+            }
         }
     }
     
-    return NO;
+    redisAsyncFree(commandContext);
+    redisAsyncFree(pubsubContext);
+    commandContext = nil;
+    pubsubContext = nil;
+}
+
+-(void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
+    DDLogWarn(@"Failed to resolve %@: %@", sender, errorDict);
+    @synchronized(servicesToResolve) {
+        [servicesToResolve removeObject:sender];
+    }
+    
+    if (servicesToResolve.count == 0) {
+        [self connectToRedis];
+    }
 }
 
 -(void)sendRedisCommand:(NSArray *)args usingContext:(redisAsyncContext *)context andThen:(void (^)(redisReply *))block {
@@ -153,29 +267,34 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 }
 
 -(void)redisContextDidConnect:(const struct redisAsyncContext *)c status:(int)status {
-    DDLogInfo(@"Subscribing to channel");
-    
-    [self sendRedisCommand:@[@"SUBSCRIBE", @"foh:frap"] usingContext:pubsubContext andThen:^(redisReply *reply) {
-        NSArray *replyArray = [self interpretRedisReply:reply];
+    if (c == pubsubContext) {
+        [self.connectionDelegate frapEndpoint:self connectionStatusChangedTo:@"Subscribing to message channel"];
         
-        if ([(NSString *)replyArray[0] isEqualToString:@"subscribe"]) {
-            [self.connectionDelegate frapEndpointDidConnect:self];
-            [self startStatusLoop];
+        [self sendRedisCommand:@[@"SUBSCRIBE", @"foh:frap"] usingContext:c andThen:^(redisReply *reply) {
+            NSArray *replyArray = [self interpretRedisReply:reply];
+            
+            if ([(NSString *)replyArray[0] isEqualToString:@"subscribe"]) {
+                self.isConnected = YES;
+                [self.connectionDelegate frapEndpointDidConnect:self];
+                [self startStatusLoop];
 
-            FrapStatusRequestMessage *statusRequest = [[FrapStatusRequestMessage alloc] init];
-            statusRequest.objectIds = @[].mutableCopy;
-            [self sendFrapMessage:statusRequest];
-        } else {
-            FrapMessage *msg = [FrapMessage decodeFrapMessage:replyArray[2]];
-            [self didReceiveFrapMessage:msg];
-        }
-    }];
+                FrapStatusRequestMessage *statusRequest = [[FrapStatusRequestMessage alloc] init];
+                statusRequest.objectIds = @[].mutableCopy;
+                [self sendFrapMessage:statusRequest];
+            } else {
+                FrapMessage *msg = [FrapMessage decodeFrapMessage:replyArray[2]];
+                [self didReceiveFrapMessage:msg];
+            }
+        }];
+    }
 }
 
--(void)redisContextDidDisconnect:(const struct redisAsyncContext *)c status:(int)status {
-    DDLogWarn(@"Redis disconnected with status %d, trying to reconnect...", status);
-    
-    [self connect:nil];
+-(void)redisContextRepliedWithError:(const struct redisAsyncContext *)c {
+    if (c->err == REDIS_ERR_IO) {
+        [self disconnectWithError:[NSError errorWithDomain:@"io.redis" code:errno userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:strerror(errno) encoding:NSASCIIStringEncoding], @"")}]];
+    } else {
+        DDLogError(@"Redis replied with error %d: %s", c->err, c->errstr);
+    }
 }
 
 -(id)interpretRedisReply:(redisReply *)reply {
@@ -204,12 +323,19 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
     return nil;
 }
 
--(void)disconnect {
+-(void)disconnectWithError:(NSError *)error {
+    self.isConnected = NO;
     [self.class deregisterEndpointWithContext:pubsubContext];
     [self.class deregisterEndpointWithContext:commandContext];
     
     redisAsyncDisconnect(pubsubContext);
     redisAsyncDisconnect(commandContext);
+    
+    [self.connectionDelegate frapEndpoint:self didDisconnectWithError:error];
+}
+
+-(void)disconnect {
+    [self disconnectWithError:nil];
 }
 
 @end

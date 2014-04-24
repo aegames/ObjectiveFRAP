@@ -31,8 +31,28 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
     }
 }
 
+-(void)frapEndpointWillConnect:(id)endpoint {
+    DDLogInfo(@"FRAP endpoint connecting...");
+}
+
 -(void)frapEndpointDidConnect:(id)endpoint {
     DDLogInfo(@"FRAP endpoint connected");
+}
+
+-(void)frapEndpoint:(id)endpoint didNotConnectWithError:(NSError *)error {
+    DDLogInfo(@"Error connecting FRAP endpoint: %@", error.localizedDescription);
+}
+
+-(void)frapEndpoint:(id)endpoint connectionStatusChangedTo:(NSString *)status {
+    DDLogInfo(@"FRAP endpoint %@", status);
+}
+
+-(void)frapEndpoint:(id)endpoint didDisconnectWithError:(NSError *)error {
+    if (error) {
+        DDLogError(@"FRAP endpoint disconnected: %@", error.localizedDescription);
+    } else {
+        DDLogInfo(@"FRAP endpoint disconnected");
+    }
 }
 
 -(BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender {

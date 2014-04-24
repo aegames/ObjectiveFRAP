@@ -11,12 +11,19 @@
 #import "hiredis/async.h"
 #import "RedisLibDispatchEvents.h"
 
-@interface FrapEndpointRedis : FrapEndpoint {
+@interface FrapEndpointRedis : FrapEndpoint<NSNetServiceBrowserDelegate, NSNetServiceDelegate> {
     redisAsyncContext *commandContext;
     RedisLibDispatchEvents *commandLibDispatchEvents;
     
     redisAsyncContext *pubsubContext;
     RedisLibDispatchEvents *pubsubLibDispatchEvents;
+    
+    NSNetServiceBrowser *serviceBrowser;
+    NSMutableSet *servicesToResolve;
+    NSMutableSet *servicesResolved;
+    dispatch_source_t browseTimer;
 }
+
+@property BOOL isConnected;
 
 @end

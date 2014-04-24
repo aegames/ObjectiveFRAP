@@ -15,5 +15,6 @@
 -(void)frapEndpoint:(id)endpoint connectionStatusChangedTo:(NSString *)status;
 -(void)frapEndpointDidConnect:(id)endpoint;
 -(void)frapEndpoint:(id)endpoint didNotConnectWithError:(NSError *)error;
+-(void)frapEndpoint:(id)endpoint didDisconnectWithError:(NSError *)error;
 
 @end
