@@ -349,6 +349,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
         return;
     }
     
+    NSSet *ownedKeys = [NSSet setWithArray:self.ownedSharedObjectKeys];
     NSArray *args = [@[@"MGET"] arrayByAddingObjectsFromArray:[keys bk_map:^id(id obj) {
         return [self redisKeyForSharedObjectKey:obj];
     }]];
@@ -375,9 +376,12 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
                 
                 [self setSharedObjectAtKey:key toValue:valueForKey sendMessage:NO];
             } else {
-                // it's NSNull; save the default to Redis
-                [valuesToSet addObject:[self redisKeyForSharedObjectKey:key]];
-                [valuesToSet addObject:[self redisEncodeSharedObjectWithKey:key]];
+                // it's NSNull
+                if ([ownedKeys member:key]) {
+                    // if we own this object, save its default value to Redis
+                    [valuesToSet addObject:[self redisKeyForSharedObjectKey:key]];
+                    [valuesToSet addObject:[self redisEncodeSharedObjectWithKey:key]];
+                }
             }
         }
         
