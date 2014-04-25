@@ -45,7 +45,9 @@ void redisContextDidDisconnect(const struct redisAsyncContext *context, int stat
 void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdata) {
     if (reply) {
         void (^block)(redisReply *) = (__bridge void (^)(redisReply *))privdata;
-        block((redisReply *)reply);
+        if (block) {
+            block((redisReply *)reply);
+        }
     } else {
         [[FrapEndpointRedis endpointForContext:context] redisContextRepliedWithError:context];
     }
@@ -179,7 +181,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
             }
         }
         
-        const char *hostName = [bestService.hostName cStringUsingEncoding:NSASCIIStringEncoding];
+        const char *hostName = [bestService.hostName cStringUsingEncoding:NSUTF8StringEncoding];
         int port = (int)bestService.port;
         
         [self.connectionDelegate frapEndpoint:self connectionStatusChangedTo:[NSString stringWithFormat:@"Connecting to Redis server on %s:%d", hostName, port]];
@@ -191,7 +193,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
         
         BOOL (^registerEndpointIfConnected)(redisAsyncContext *) = ^BOOL(redisAsyncContext *context) {
             if (context->err) {
-                [self.connectionDelegate frapEndpoint:self didNotConnectWithError:[NSError errorWithDomain:@"org.aegames" code:pubsubContext->err userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:pubsubContext->errstr encoding:NSASCIIStringEncoding], @"")}]];
+                [self.connectionDelegate frapEndpoint:self didNotConnectWithError:[NSError errorWithDomain:@"org.aegames" code:pubsubContext->err userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:pubsubContext->errstr encoding:NSUTF8StringEncoding], @"")}]];
                 return NO;
             } else {
                 [self.class registerEndpoint:self withContext:pubsubContext];
@@ -234,15 +236,16 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
     for (id arg in args) {
         NSData *data;
         if ([arg isKindOfClass:[NSString class]]) {
-            data = [arg dataUsingEncoding:NSASCIIStringEncoding];
+            data = [arg dataUsingEncoding:NSUTF8StringEncoding];
         } else if ([arg isKindOfClass:[NSData class]]) {
             data = arg;
         }
         
         const void *cString = [data bytes];
         size_t length = [data length];
-        char *copy = malloc(sizeof(char) * length);
+        char *copy = malloc(sizeof(char) * (length + 1));
         strcpy(copy, cString);
+        copy[length] = '\0';
         
         argArray[i] = copy;
         argvlen[i++] = length;
@@ -293,7 +296,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 
 -(void)redisContextRepliedWithError:(const struct redisAsyncContext *)c {
     if (c->err == REDIS_ERR_IO) {
-        [self disconnectWithError:[NSError errorWithDomain:@"io.redis" code:errno userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:strerror(errno) encoding:NSASCIIStringEncoding], @"")}]];
+        [self disconnectWithError:[NSError errorWithDomain:@"io.redis" code:errno userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:strerror(errno) encoding:NSUTF8StringEncoding], @"")}]];
     } else {
         NSLog(@"Redis replied with error %d: %s", c->err, c->errstr);
     }
@@ -307,11 +310,11 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
     
     switch (reply->type) {
         case REDIS_REPLY_ERROR:
-            return [NSError errorWithDomain:@"io.redis" code:context->err userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:reply->str encoding:NSASCIIStringEncoding], @"")}];
+            return [NSError errorWithDomain:@"io.redis" code:context->err userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:reply->str encoding:NSUTF8StringEncoding], @"")}];
         
         case REDIS_REPLY_STATUS:
         case REDIS_REPLY_STRING:
-            return [NSString stringWithCString:reply->str encoding:NSASCIIStringEncoding];
+            return [NSString stringWithCString:reply->str encoding:NSUTF8StringEncoding];
             
         case REDIS_REPLY_INTEGER:
             return [NSNumber numberWithLongLong:reply->integer];
@@ -366,7 +369,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
                 break;
         }
         
-        [self sendRedisCommand:@[@"SET", key, valueString] andThen:nil];
+        [self sendRedisCommand:@[@"SET", [self redisKeyForSharedObjectKey:key], valueString] andThen:nil];
     }
     
     [super setSharedObjectAtKey:key toValue:value sendMessage:sendMessage];
