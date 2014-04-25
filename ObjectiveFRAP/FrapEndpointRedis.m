@@ -9,6 +9,7 @@
 #import "FrapEndpointRedis.h"
 #import "hiredis-libdispatch.h"
 #import "FrdlParser.h"
+#import <BlocksKit/BlocksKit.h>
 
 @interface FrapEndpointRedis ()
 
@@ -341,7 +342,9 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 }
 
 -(void)loadSharedObjectValues {
-    NSArray *keys = self.ownedSharedObjectKeys;
+    NSArray *keys = [self.ownedSharedObjectKeys bk_map:^id(id obj) {
+        return [self redisKeyForSharedObjectKey:obj];
+    }];
     if (keys.count == 0) {
         return;
     }

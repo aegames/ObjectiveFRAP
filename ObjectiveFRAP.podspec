@@ -30,4 +30,5 @@ Pod::Spec.new do |s|
   s.dependency 'CocoaAsyncSocket'
   s.dependency 'Reachability'
   s.dependency 'hiredis'
+  s.dependency 'BlocksKit', '~> 2.0.0'
 end

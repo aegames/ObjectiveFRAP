@@ -5,6 +5,7 @@ target 'ObjectiveFRAP Mac OS X' do
 
   pod 'CocoaAsyncSocket'
   pod 'Reachability'
+  pod 'BlocksKit', '~> 2.0.0'
   pod 'hiredis'
 end
 
@@ -13,6 +14,7 @@ target 'ObjectiveFRAP iOS' do
 
   pod 'CocoaAsyncSocket'
   pod 'Reachability'
+  pod 'BlocksKit', '~> 2.0.0'
   pod 'hiredis'
 end
 
