@@ -342,7 +342,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 }
 
 -(void)loadSharedObjectValues {
-    NSArray *keys = self.ownedSharedObjectKeys;
+    NSArray *keys = [[FrdlParser sharedParser] allSharedObjects];
     if (keys.count == 0) {
         return;
     }
