@@ -335,9 +335,17 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 }
 
 -(void)loadSharedObjectValues {
-    for (NSString *key in self.ownedSharedObjectKeys) {
-        [self sendRedisCommand:@[@"GET", [self redisKeyForSharedObjectKey:key]] andThen:^(redisReply *reply) {
-            NSString *string = [self interpretRedisReply:reply withContext:commandContext];
+    NSArray *keys = self.ownedSharedObjectKeys;
+    if (keys.count == 0) {
+        return;
+    }
+    
+    [self sendRedisCommand:[@[@"MGET"] arrayByAddingObjectsFromArray:keys] andThen:^(redisReply *reply) {
+        NSArray *values = [self interpretRedisReply:reply withContext:commandContext];
+        
+        NSEnumerator *keyEnumerator = [keys objectEnumerator];
+        for (NSString *string in values) {
+            NSString *key = [keyEnumerator nextObject];
             
             if (string) {
                 id valueForKey;
@@ -355,8 +363,8 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
                 // save the default to Redis
                 [self setSharedObjectAtKey:key toValue:[self sharedObjectValueForKey:key] sendMessage:YES];
             }
-        }];
-    }
+        }
+    }];
 }
 
 -(void)setSharedObjectAtKey:(NSString *)key toValue:(NSObject *)value sendMessage:(BOOL)sendMessage {

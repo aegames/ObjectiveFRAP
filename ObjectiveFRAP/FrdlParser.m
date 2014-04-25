@@ -134,4 +134,8 @@ FrdlParser *sharedParser = nil;
     return [roleSharedObjects valueForKey:role];
 }
 
+-(NSArray *)allSharedObjects {
+    return self.sharedObjectDefaultValues.keyEnumerator.allObjects;
+}
+
 @end

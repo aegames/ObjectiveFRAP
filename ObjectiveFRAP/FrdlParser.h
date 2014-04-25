@@ -38,5 +38,6 @@ enum FrapSharedObjectType {
 -(NSDictionary *)eventArgs;
 -(enum FrapSharedObjectType)sharedObjectTypeForKey:(NSString *)key;
 -(NSArray *)sharedObjectsOwnedByRole:(NSString *)role;
+-(NSArray *)allSharedObjects;
 
 @end
