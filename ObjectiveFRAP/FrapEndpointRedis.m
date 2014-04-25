@@ -29,6 +29,8 @@
 
 -(void)loadSharedObjectValues;
 -(NSString *)redisKeyForSharedObjectKey:(NSString *)key;
+-(NSString *)redisEncodeSharedObjectValue:(id)value ofType:(enum FrapSharedObjectType)type;
+-(NSString *)redisEncodeSharedObjectWithKey:(NSString *)key;
 
 @end
 
@@ -353,6 +355,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
     
     [self sendRedisCommand:args andThen:^(redisReply *reply) {
         NSArray *values = [self interpretRedisReply:reply withContext:commandContext];
+        NSMutableArray *valuesToSet = [NSMutableArray array];
         
         NSEnumerator *keyEnumerator = [keys objectEnumerator];
         for (id value in values) {
@@ -373,27 +376,33 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
                 [self setSharedObjectAtKey:key toValue:valueForKey sendMessage:NO];
             } else {
                 // it's NSNull; save the default to Redis
-                [self setSharedObjectAtKey:key toValue:[self sharedObjectValueForKey:key] sendMessage:YES];
+                [valuesToSet addObject:[self redisKeyForSharedObjectKey:key]];
+                [valuesToSet addObject:[self redisEncodeSharedObjectWithKey:key]];
             }
+        }
+        
+        if (valuesToSet.count > 0) {
+            [self sendRedisCommand:[@[@"MSET"] arrayByAddingObjectsFromArray:valuesToSet] andThen:nil];
         }
     }];
 }
 
+-(NSString *)redisEncodeSharedObjectValue:(id)value ofType:(enum FrapSharedObjectType)type {
+    if (type == FrapNumber) {
+        NSNumber *numberValue = (NSNumber *)value;
+        return [numberValue stringValue];
+    } else {
+        return (NSString *)value;
+    }
+}
+
+-(NSString *)redisEncodeSharedObjectWithKey:(NSString *)key {
+    return [self redisEncodeSharedObjectValue:[self sharedObjectValueForKey:key] ofType:[[FrdlParser sharedParser] sharedObjectTypeForKey:key]];
+}
+
 -(void)setSharedObjectAtKey:(NSString *)key toValue:(NSObject *)value sendMessage:(BOOL)sendMessage {
     if (sendMessage) {
-        NSString *valueString;
-        NSNumber *numberValue;
-        
-        switch ([[FrdlParser sharedParser] sharedObjectTypeForKey:key]) {
-            case FrapNumber:
-                numberValue = (NSNumber *)value;
-                valueString = [numberValue stringValue];
-                break;
-            default:
-                valueString = (NSString *)value;
-                break;
-        }
-        
+        NSString *valueString = [self redisEncodeSharedObjectValue:value ofType:[[FrdlParser sharedParser] sharedObjectTypeForKey:key]];
         [self sendRedisCommand:@[@"SET", [self redisKeyForSharedObjectKey:key], valueString] andThen:nil];
     }
     
