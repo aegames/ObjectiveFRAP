@@ -336,21 +336,26 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 
 -(void)loadSharedObjectValues {
     for (NSString *key in self.ownedSharedObjectKeys) {
-        __block id valueForKey;
-        
         [self sendRedisCommand:@[@"GET", [self redisKeyForSharedObjectKey:key]] andThen:^(redisReply *reply) {
             NSString *string = [self interpretRedisReply:reply withContext:commandContext];
             
-            switch ([[FrdlParser sharedParser] sharedObjectTypeForKey:key]) {
-                case FrapNumber:
-                    valueForKey = [NSNumber numberWithFloat:[string floatValue]];
-                    break;
-                default:
-                    valueForKey = string;
+            if (string) {
+                id valueForKey;
+                
+                switch ([[FrdlParser sharedParser] sharedObjectTypeForKey:key]) {
+                    case FrapNumber:
+                        valueForKey = [NSNumber numberWithFloat:[string floatValue]];
+                        break;
+                    default:
+                        valueForKey = string;
+                }
+                
+                [self setSharedObjectAtKey:key toValue:valueForKey sendMessage:NO];
+            } else {
+                // save the default to Redis
+                [self setSharedObjectAtKey:key toValue:[self sharedObjectValueForKey:key] sendMessage:YES];
             }
         }];
-        
-        [self setSharedObjectAtKey:key toValue:valueForKey sendMessage:NO];
     }
 }
 
