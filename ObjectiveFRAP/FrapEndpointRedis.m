@@ -322,7 +322,13 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
         case REDIS_REPLY_ARRAY:
             array = [NSMutableArray arrayWithCapacity:reply->elements];
             for (int i=0; i<reply->elements; i++) {
-                array[i] = [self interpretRedisReply:reply->element[i] withContext:context];
+                id element = [self interpretRedisReply:reply->element[i] withContext:context];
+                
+                if (element) {
+                    array[i] = element;
+                } else {
+                    array[i] = [NSNull null];
+                }
             }
             return array;
     }
@@ -344,10 +350,11 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
         NSArray *values = [self interpretRedisReply:reply withContext:commandContext];
         
         NSEnumerator *keyEnumerator = [keys objectEnumerator];
-        for (NSString *string in values) {
+        for (id value in values) {
             NSString *key = [keyEnumerator nextObject];
             
-            if (string) {
+            if ([value isKindOfClass:[NSString class]]) {
+                NSString *string = (NSString *)value;
                 id valueForKey;
                 
                 switch ([[FrdlParser sharedParser] sharedObjectTypeForKey:key]) {
@@ -360,7 +367,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
                 
                 [self setSharedObjectAtKey:key toValue:valueForKey sendMessage:NO];
             } else {
-                // save the default to Redis
+                // it's NSNull; save the default to Redis
                 [self setSharedObjectAtKey:key toValue:[self sharedObjectValueForKey:key] sendMessage:YES];
             }
         }
