@@ -244,7 +244,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
         const void *cString = [data bytes];
         size_t length = [data length];
         char *copy = malloc(sizeof(char) * (length + 1));
-        strcpy(copy, cString);
+        memcpy(copy, cString, length);
         copy[length] = '\0';
         
         argArray[i] = copy;
