@@ -342,14 +342,16 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 }
 
 -(void)loadSharedObjectValues {
-    NSArray *keys = [self.ownedSharedObjectKeys bk_map:^id(id obj) {
-        return [self redisKeyForSharedObjectKey:obj];
-    }];
+    NSArray *keys = self.ownedSharedObjectKeys;
     if (keys.count == 0) {
         return;
     }
     
-    [self sendRedisCommand:[@[@"MGET"] arrayByAddingObjectsFromArray:keys] andThen:^(redisReply *reply) {
+    NSArray *args = [@[@"MGET"] arrayByAddingObjectsFromArray:[keys bk_map:^id(id obj) {
+        return [self redisKeyForSharedObjectKey:obj];
+    }]];
+    
+    [self sendRedisCommand:args andThen:^(redisReply *reply) {
         NSArray *values = [self interpretRedisReply:reply withContext:commandContext];
         
         NSEnumerator *keyEnumerator = [keys objectEnumerator];
