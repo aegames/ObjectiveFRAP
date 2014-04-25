@@ -44,7 +44,7 @@ static const int ddLogLevel = LOG_LEVEL_VERBOSE;
 }
 
 -(void)frapEndpoint:(id)endpoint connectionStatusChangedTo:(NSString *)status {
-    DDLogInfo(@"FRAP endpoint %@", status);
+    DDLogInfo(@"[Endpoint] %@", status);
 }
 
 -(void)frapEndpoint:(id)endpoint didDisconnectWithError:(NSError *)error {

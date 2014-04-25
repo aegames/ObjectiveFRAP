@@ -44,9 +44,10 @@
 -(NSObject *)sharedObjectValueForKey:(NSString *)key;
 -(NSEnumerator *)sharedObjectKeys;
 
--(void)startStatusLoop;
--(void)stopStatusLoop;
-
 -(void)addObserver:(NSObject *)observer forSharedObject:(NSString *)key options:(NSKeyValueObservingOptions)options;
+
+- (FrapStatusUpdateMessage*)statusUpdateMessageForSharedObjectKeys: (NSArray*)keys;
+
+- (NSArray*)ownedSharedObjectKeys;
 
 @end

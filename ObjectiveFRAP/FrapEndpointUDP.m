@@ -7,11 +7,17 @@
 //
 
 #import "FrapEndpointUDP.h"
+#import "FrdlParser.h"
 
 @interface FrapEndpointUDP () {
     BOOL udpBound;
     long tag;
+    NSTimer *statusUpdateTimer;
+    NSTimer *statusRequestTimeoutTimer;
 }
+
+-(void)startStatusUpdateTimer;
+-(void)sendStatusUpdateMessageForFrdlRole;
 @end
 
 @implementation FrapEndpointUDP
@@ -114,6 +120,54 @@
 
 -(void)udpSocket:(GCDAsyncUdpSocket *)sock didNotSendDataWithTag:(long)t dueToError:(NSError *)error {
     NSLog(@"Failed to send data with tag %ld due to %@", t, error);
+}
+
+-(void)didReceiveFrapMessage:(FrapMessage *)msg {
+    [super didReceiveFrapMessage:msg];
+    
+    if ([msg isKindOfClass:[FrapStatusUpdateMessage class]]) {
+        FrapStatusUpdateMessage *statusUpdate = (FrapStatusUpdateMessage *)msg;
+        
+        // don't start the status update timer until we've received our initial values
+        if (statusRequestTimeoutTimer != nil && [[NSSet setWithArray:self.ownedSharedObjectKeys] isSubsetOfSet:[NSSet setWithArray:statusUpdate.objects.allKeys]]) {
+            [self startStatusUpdateTimer];
+        }
+    }
+}
+
+-(void)startStatusLoop {
+    if (self.frdlRole != nil) {
+        FrapStatusRequestMessage *statusRequest = [[FrapStatusRequestMessage alloc] init];
+        statusRequest.objectIds = [self.ownedSharedObjectKeys mutableCopy];
+        [self sendFrapMessage:statusRequest];
+        
+        statusRequestTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(startStatusUpdateTimer) userInfo:nil repeats:NO];
+    }
+}
+
+-(void)stopStatusLoop {
+    [statusRequestTimeoutTimer invalidate];
+    statusRequestTimeoutTimer = nil;
+    
+    [statusUpdateTimer invalidate];
+    statusUpdateTimer = nil;
+}
+
+-(void)startStatusUpdateTimer {
+    [statusRequestTimeoutTimer invalidate];
+    statusRequestTimeoutTimer = nil;
+    
+    statusUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(sendStatusUpdateMessageForFrdlRole) userInfo:nil repeats:YES];
+}
+
+
+-(void)sendStatusUpdateMessageForFrdlRole {
+    if (self.frdlRole == nil)
+        return;
+    
+    NSArray *keys;
+    keys = [self ownedSharedObjectKeys];
+    [self sendFrapMessage:[self statusUpdateMessageForSharedObjectKeys:keys]];
 }
 
 @end

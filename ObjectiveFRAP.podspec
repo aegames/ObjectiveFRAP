@@ -29,8 +29,5 @@ Pod::Spec.new do |s|
 
   s.dependency 'CocoaAsyncSocket'
   s.dependency 'Reachability'
-  s.dependency 'XMPPFramework'
   s.dependency 'hiredis'
-
-  s.xcconfig     = { 'HEADER_SEARCH_PATHS' => '"$(SDKROOT)/usr/include/libxml2"' }
 end

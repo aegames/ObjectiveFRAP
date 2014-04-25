@@ -7,10 +7,8 @@
 //
 
 #import "FrapEndpointRedis.h"
-#import "DDLog.h"
 #import "hiredis-libdispatch.h"
-
-static int ddLogLevel = LOG_LEVEL_INFO;
+#import "FrdlParser.h"
 
 @interface FrapEndpointRedis ()
 
@@ -26,8 +24,11 @@ static int ddLogLevel = LOG_LEVEL_INFO;
 -(void)sendRedisCommand:(NSArray *)args andThen:(void (^)(redisReply *))block;
 -(void)redisContextRepliedWithError:(const struct redisAsyncContext *)c;
 -(void)disconnectWithError:(NSError *)error;
+-(id)interpretRedisReply:(redisReply *)reply withContext:(const struct redisAsyncContext *)context;
 
--(id)interpretRedisReply:(redisReply *)reply;
+-(void)loadSharedObjectValues;
+-(NSString *)redisKeyForSharedObjectKey:(NSString *)key;
+
 @end
 
 @implementation FrapEndpointRedis
@@ -121,10 +122,13 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 
 -(void)netServiceBrowser:(NSNetServiceBrowser *)aNetServiceBrowser didFindService:(NSNetService *)aNetService moreComing:(BOOL)moreComing {
     
-    dispatch_source_cancel(browseTimer);
+    if (browseTimer) {
+        dispatch_source_cancel(browseTimer);
+        browseTimer = nil;
+    }
     
     if ([aNetService.name isEqualToString:@"foh-redis"]) {
-        DDLogDebug(@"Found service %@ on %@", aNetService.name, aNetService);
+        [self.connectionDelegate frapEndpoint:self connectionStatusChangedTo:[NSString stringWithFormat:@"Found service %@ on %@", aNetService.name, aNetService.domain]];
         
         @synchronized(servicesToResolve) {
             [servicesToResolve addObject:aNetService];
@@ -142,7 +146,7 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 }
 
 -(void)netServiceDidResolveAddress:(NSNetService *)aNetService {
-    DDLogDebug(@"Resolved service %@ on %@:%ld", aNetService.name, aNetService.hostName, aNetService.port);
+    [self.connectionDelegate frapEndpoint:self connectionStatusChangedTo:[NSString stringWithFormat:@"Resolved service %@ on %@:%ld", aNetService.name, aNetService.hostName, aNetService.port]];
     
     @synchronized(servicesToResolve) {
         [servicesToResolve removeObject:aNetService];
@@ -161,7 +165,6 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
         }
         
         if (servicesResolved.count == 0) {
-            DDLogError(@"No Redis server found!");
             [self.connectionDelegate frapEndpoint:self didNotConnectWithError:[NSError errorWithDomain:@"org.aegames" code:-1 userInfo:@{NSLocalizedDescriptionKey:NSLocalizedString(@"No Redis server found", @"")}]];
             
             return;
@@ -214,7 +217,6 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
 }
 
 -(void)netService:(NSNetService *)sender didNotResolve:(NSDictionary *)errorDict {
-    DDLogWarn(@"Failed to resolve %@: %@", sender, errorDict);
     @synchronized(servicesToResolve) {
         [servicesToResolve removeObject:sender];
     }
@@ -270,17 +272,13 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
     if (c == pubsubContext) {
         [self.connectionDelegate frapEndpoint:self connectionStatusChangedTo:@"Subscribing to message channel"];
         
-        [self sendRedisCommand:@[@"SUBSCRIBE", @"foh:frap"] usingContext:c andThen:^(redisReply *reply) {
-            NSArray *replyArray = [self interpretRedisReply:reply];
+        [self sendRedisCommand:@[@"SUBSCRIBE", @"foh:frap"] usingContext:(redisAsyncContext *)c andThen:^(redisReply *reply) {
+            NSArray *replyArray = [self interpretRedisReply:reply withContext:c];
             
             if ([(NSString *)replyArray[0] isEqualToString:@"subscribe"]) {
                 self.isConnected = YES;
                 [self.connectionDelegate frapEndpointDidConnect:self];
-                [self startStatusLoop];
-
-                FrapStatusRequestMessage *statusRequest = [[FrapStatusRequestMessage alloc] init];
-                statusRequest.objectIds = @[].mutableCopy;
-                [self sendFrapMessage:statusRequest];
+                [self loadSharedObjectValues];
             } else {
                 FrapMessage *msg = [FrapMessage decodeFrapMessage:replyArray[2]];
                 [self didReceiveFrapMessage:msg];
@@ -289,23 +287,29 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
     }
 }
 
+-(void)redisContextDidDisconnect:(const struct redisAsyncContext *)c status:(int)status {
+    [self disconnect];
+}
+
 -(void)redisContextRepliedWithError:(const struct redisAsyncContext *)c {
     if (c->err == REDIS_ERR_IO) {
         [self disconnectWithError:[NSError errorWithDomain:@"io.redis" code:errno userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:strerror(errno) encoding:NSASCIIStringEncoding], @"")}]];
     } else {
-        DDLogError(@"Redis replied with error %d: %s", c->err, c->errstr);
+        NSLog(@"Redis replied with error %d: %s", c->err, c->errstr);
     }
 }
 
--(id)interpretRedisReply:(redisReply *)reply {
+-(id)interpretRedisReply:(redisReply *)reply withContext:(const struct redisAsyncContext *)context {
     NSMutableArray *array;
     
     if (reply == nil)
         return nil;
     
     switch (reply->type) {
-        case REDIS_REPLY_STATUS:
         case REDIS_REPLY_ERROR:
+            return [NSError errorWithDomain:@"io.redis" code:context->err userInfo:@{NSLocalizedDescriptionKey: NSLocalizedString([NSString stringWithCString:reply->str encoding:NSASCIIStringEncoding], @"")}];
+        
+        case REDIS_REPLY_STATUS:
         case REDIS_REPLY_STRING:
             return [NSString stringWithCString:reply->str encoding:NSASCIIStringEncoding];
             
@@ -315,12 +319,57 @@ void redisCommandCallback(redisAsyncContext *context, void *reply, void *privdat
         case REDIS_REPLY_ARRAY:
             array = [NSMutableArray arrayWithCapacity:reply->elements];
             for (int i=0; i<reply->elements; i++) {
-                array[i] = [self interpretRedisReply:reply->element[i]];
+                array[i] = [self interpretRedisReply:reply->element[i] withContext:context];
             }
             return array;
     }
     
     return nil;
+}
+
+-(NSString *)redisKeyForSharedObjectKey:(NSString *)key {
+    return [NSString stringWithFormat:@"foh:shared_object:%@", key];
+}
+
+-(void)loadSharedObjectValues {
+    for (NSString *key in self.ownedSharedObjectKeys) {
+        __block id valueForKey;
+        
+        [self sendRedisCommand:@[@"GET", [self redisKeyForSharedObjectKey:key]] andThen:^(redisReply *reply) {
+            NSString *string = [self interpretRedisReply:reply withContext:commandContext];
+            
+            switch ([[FrdlParser sharedParser] sharedObjectTypeForKey:key]) {
+                case FrapNumber:
+                    valueForKey = [NSNumber numberWithFloat:[string floatValue]];
+                    break;
+                default:
+                    valueForKey = string;
+            }
+        }];
+        
+        [self setSharedObjectAtKey:key toValue:valueForKey sendMessage:NO];
+    }
+}
+
+-(void)setSharedObjectAtKey:(NSString *)key toValue:(NSObject *)value sendMessage:(BOOL)sendMessage {
+    if (sendMessage) {
+        NSString *valueString;
+        NSNumber *numberValue;
+        
+        switch ([[FrdlParser sharedParser] sharedObjectTypeForKey:key]) {
+            case FrapNumber:
+                numberValue = (NSNumber *)value;
+                valueString = [numberValue stringValue];
+                break;
+            default:
+                valueString = (NSString *)value;
+                break;
+        }
+        
+        [self sendRedisCommand:@[@"SET", key, valueString] andThen:nil];
+    }
+    
+    [super setSharedObjectAtKey:key toValue:value sendMessage:sendMessage];
 }
 
 -(void)disconnectWithError:(NSError *)error {

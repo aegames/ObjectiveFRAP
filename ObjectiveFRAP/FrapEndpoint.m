@@ -20,14 +20,9 @@
     NSLock *sharedObjectDictionaryLock;
     NSString *subscriptionRequestSid;
     
-    NSTimer *statusUpdateTimer;
-    NSTimer *statusRequestTimeoutTimer;
-
     __strong Reachability *reachability;
 }
 
--(void)sendStatusUpdateMessageForFrdlRole;
--(void)startStatusUpdateTimer;
 #if TARGET_OS_IPHONE
 -(void)reachabilityChanged:(NSNotification *)note;
 #endif
@@ -145,10 +140,6 @@
         for (NSString *key in statusUpdate.objects.keyEnumerator) {
             [self setSharedObjectAtKey:key toValue:[statusUpdate.objects valueForKey:key] sendMessage:NO];
         }
-        
-        if (statusRequestTimeoutTimer != nil && [[NSSet setWithArray:[[FrdlParser sharedParser] sharedObjectsOwnedByRole:frdlRole]] isSubsetOfSet:[NSSet setWithArray:statusUpdate.objects.allKeys]]) {
-            [self startStatusUpdateTimer];
-        }
     } else if ([msg isKindOfClass:[FrapStatusRequestMessage class]]) {
         FrapStatusRequestMessage *statusRequest = (FrapStatusRequestMessage *)msg;
         FrapStatusUpdateMessage *reply = [[FrapStatusUpdateMessage alloc] init];
@@ -219,11 +210,7 @@
     }
 }
 
--(void)sendStatusUpdateMessageForFrdlRole {
-    if (frdlRole == nil)
-        return;
-    
-    NSArray *keys = [[FrdlParser sharedParser] sharedObjectsOwnedByRole:self.frdlRole];
+- (FrapStatusUpdateMessage *)statusUpdateMessageForSharedObjectKeys:(NSArray *)keys {
     FrapStatusUpdateMessage *msg = [[FrapStatusUpdateMessage alloc] init];
     NSMutableDictionary *objects = [[NSMutableDictionary alloc] initWithCapacity:[keys count]];
     
@@ -232,32 +219,15 @@
     }
     
     msg.objects = objects;
-    [self sendFrapMessage:msg];
+    return msg;
 }
 
--(void)startStatusLoop {
-    if (frdlRole != nil) {
-        FrapStatusRequestMessage *statusRequest = [[FrapStatusRequestMessage alloc] init];
-        statusRequest.objectIds = [[[FrdlParser sharedParser] sharedObjectsOwnedByRole:frdlRole] mutableCopy];
-        [self sendFrapMessage:statusRequest];
-        
-        statusRequestTimeoutTimer = [NSTimer scheduledTimerWithTimeInterval:5.0 target:self selector:@selector(startStatusUpdateTimer) userInfo:nil repeats:NO];
+- (NSArray *)ownedSharedObjectKeys {
+    if (self.frdlRole == nil) {
+        return @[];
+    } else {
+        return [[FrdlParser sharedParser] sharedObjectsOwnedByRole:self.frdlRole];
     }
-}
-
--(void)stopStatusLoop {
-    [statusRequestTimeoutTimer invalidate];
-    statusRequestTimeoutTimer = nil;
-    
-    [statusUpdateTimer invalidate];
-    statusUpdateTimer = nil;
-}
-
--(void)startStatusUpdateTimer {
-    [statusRequestTimeoutTimer invalidate];
-    statusRequestTimeoutTimer = nil;
-    
-    statusUpdateTimer = [NSTimer scheduledTimerWithTimeInterval:1.5 target:self selector:@selector(sendStatusUpdateMessageForFrdlRole) userInfo:nil repeats:YES];
 }
 
 @end

@@ -5,7 +5,6 @@ target 'ObjectiveFRAP Mac OS X' do
 
   pod 'CocoaAsyncSocket'
   pod 'Reachability'
-  pod 'XMPPFramework'
   pod 'hiredis'
 end
 
@@ -14,11 +13,11 @@ target 'ObjectiveFRAP iOS' do
 
   pod 'CocoaAsyncSocket'
   pod 'Reachability'
-  pod 'XMPPFramework'
   pod 'hiredis'
 end
 
 target 'FRAPConsole' do
+  pod 'CocoaLumberjack'
   platform :osx, '10.7'
 end
 
