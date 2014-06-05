@@ -6,13 +6,8 @@
 //  Copyright 2011. All rights reserved.
 //
 
-#include <netinet/in.h>
-#include <arpa/inet.h>
 #import "FrapEndpoint.h"
-#import "FrapMessages.h"
-#include <stdio.h>
 #import "FrapSharedObject.h"
-#import "GCDAsyncUdpSocket.h"
 #import "FrdlParser.h"
 
 @interface FrapEndpoint () {

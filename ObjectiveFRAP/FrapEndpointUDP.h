@@ -7,6 +7,7 @@
 //
 
 #import "FrapEndpoint.h"
+#import "GCDAsyncUdpSocket.h"
 
 @interface FrapEndpointUDP : FrapEndpoint<GCDAsyncUdpSocketDelegate> {
     GCDAsyncUdpSocket *listenSocket;

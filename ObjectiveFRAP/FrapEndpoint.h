@@ -10,19 +10,15 @@
 #import "FrapMessages.h"
 #import "FrapEndpointDelegate.h"
 #import "FrapEndpointConnectionDelegate.h"
-#import "GCDAsyncUdpSocket.h"
 #import "Reachability.h"
 
-@interface FrapEndpoint : NSObject {
-	NSString *__unsafe_unretained endpointId;
-	id<FrapEndpointDelegate> __unsafe_unretained delegate;
-}
+@interface FrapEndpoint : NSObject
 
-@property (nonatomic, unsafe_unretained) NSString *endpointId;
-@property (nonatomic, unsafe_unretained) NSString *frdlRole;
-@property (nonatomic, unsafe_unretained) IBOutlet id<FrapEndpointDelegate> delegate;
-@property (nonatomic, unsafe_unretained) IBOutlet id<FrapEndpointConnectionDelegate> connectionDelegate;
-@property (nonatomic, readonly) NSMutableDictionary *sharedObjects;
+@property NSString *endpointId;
+@property NSString *frdlRole;
+@property (nonatomic) IBOutlet id<FrapEndpointDelegate> delegate;
+@property (nonatomic) IBOutlet id<FrapEndpointConnectionDelegate> connectionDelegate;
+@property (readonly) NSMutableDictionary *sharedObjects;
 
 +(FrapEndpoint *)sharedEndpoint;
 
