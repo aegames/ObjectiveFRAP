@@ -8,7 +8,7 @@
 #
 Pod::Spec.new do |s|
   s.name         = "ObjectiveFRAP"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.license      = "MIT"
   s.summary      = "An Objective-C implementation of a FRAP protocol endpoint."
   s.description  = <<-DESC

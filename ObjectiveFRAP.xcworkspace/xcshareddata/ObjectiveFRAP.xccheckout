@@ -10,29 +10,29 @@
 	<string>ObjectiveFRAP</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>DDAA7DC5-B5D8-4A4E-B666-71A400201212</key>
+		<key>29371C4B5E1DDD4DAE05A9AC315041A9986FEBCC</key>
 		<string>ssh://github.com/aegames/ObjectiveFRAP.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>ObjectiveFRAP.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>DDAA7DC5-B5D8-4A4E-B666-71A400201212</key>
+		<key>29371C4B5E1DDD4DAE05A9AC315041A9986FEBCC</key>
 		<string>..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
 	<string>ssh://github.com/aegames/ObjectiveFRAP.git</string>
 	<key>IDESourceControlProjectVersion</key>
-	<integer>110</integer>
+	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>DDAA7DC5-B5D8-4A4E-B666-71A400201212</string>
+	<string>29371C4B5E1DDD4DAE05A9AC315041A9986FEBCC</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>DDAA7DC5-B5D8-4A4E-B666-71A400201212</string>
+			<string>29371C4B5E1DDD4DAE05A9AC315041A9986FEBCC</string>
 			<key>IDESourceControlWCCName</key>
 			<string>ObjectiveFRAP</string>
 		</dict>
